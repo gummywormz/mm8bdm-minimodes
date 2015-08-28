@@ -1,0 +1,54 @@
+#INCLUDE "ZCOMMON.ACS"
+#LIBRARY "CORE"
+
+
+Script 886 ENTER
+{
+While(GetCvar("bloodthirst_takerate") == 0){Delay(15);}
+Delay(35 / GetCvar("bloodthirst_takerate"));
+TakeInventory("BloodMeter",GetCvar("bloodthirst_takeamount"));
+if(CheckInventory("BloodMeter") == 0){
+DamageThing(255);
+Terminate;//they somehow stack otherwise...
+}
+Delay(1);
+Restart;
+}
+
+Script 887 RESPAWN
+{
+ACS_ExecuteAlways(882,0);
+ACS_ExecuteAlways(886,0);
+}
+
+Script 885 OPEN
+{
+if(!GetCVar("bloodthirst_automanage")){terminate;}
+Delay(35);
+if(PlayerCount() > 6)
+{
+	SetCvar("bloodthirst_takerate",3);
+	SetCvar("bloodthirst_startamount",70);
+}
+else
+{
+	SetCvar("bloodthirst_takerate",4);
+	SetCvar("bloodthirst_startamount",40);
+	SetCvar("bloodthirst_takeamount",1);
+	SetCvar("bloodthirst_gainamount",5);
+}
+}
+
+Script 884 (void){
+SetResultValue(GetCvar("bloodthirst_gainamount"));
+}
+
+Script 883 DEATH
+{
+TakeInventory("BloodMeter",999);
+}
+
+Script 882 ENTER
+{
+GiveInventory("BloodMeter",GetCvar("bloodthirst_startamount"));
+}

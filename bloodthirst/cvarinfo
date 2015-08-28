@@ -1,0 +1,5 @@
+server int bloodthirst_startamount = 40;
+server int bloodthirst_takeamount = 1;
+server int bloodthirst_gainamount = 3;
+server int bloodthirst_takerate = 4;
+server bool bloodthirst_automanage;

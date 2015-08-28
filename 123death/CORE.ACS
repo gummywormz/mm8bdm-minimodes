@@ -1,0 +1,221 @@
+#INCLUDE "ZCOMMON.ACS"
+#LIBRARY "CORE"
+
+int helprandom = 0;
+int roundspassed = 0;
+
+str help[64]={
+"TopSpinWep",
+"FlameSwordWep",
+"FlameBlastWep",
+"BubbleLeadWep",
+"QuickBoomerangWep",
+"GeminiLaserWep",
+"HyperBombWep",
+"IceWaveWep",
+"SparkShockWep",
+"WaterBalloonWep",
+"WaterWaveWep",
+"MagnetMissileWep",
+"CrystalEyeWep",
+"HardKnuckleWep",
+"ThunderBeamWep",
+"CrashBombWep",
+"StarCrashWep",
+"IceSlasherWep",
+"CentaurFlashWep",
+"RainFlushWep",
+"ThunderBoltWep",
+"ThunderClawWep",
+"AtomicFireWep",
+"SilverTomahawkWep",
+"NoiseCrushWep",
+"FreezeCrackerWep",
+"WindStormWep",
+"DangerWrapWep",
+"TornadoHoldWep",
+"WildCoilWep",
+"KnightCrushWep",
+"AirShooterWep",
+"HomingSniperWep",
+"MegaBallWep",
+"YamatoSpearWep",
+"MetalBladeWep",
+"BubbleLeadWep",
+"RingBoomerangWep",
+"ScorchWheelWep",
+"SuperArmWep",
+"FlashBombWep",
+"PowerStoneWep",
+"NeedleCannonWep",
+"SearchSnakeWep",
+"ShadowBladeWep",
+"BalladeCrackerWep",
+"ScrewCrusherWep",
+"SakugarneWep",
+"RollingCutterWep",
+"DiveMissileWep",
+"DustCrusherWep",
+"SlashClawWep",
+"AirShooterWep",
+"BlizzardAttackWep",
+"FireStormWep",
+"IceWallWep",
+"WaveBurnerWep",
+"RemoteMineWep",
+"MagicCardWep",
+"DrillBombWep",
+"CopyVisionWep",
+"SpreadDrillWep",
+"PharaohShotWep",
+"GravityHoldWep"};
+
+SCRIPT 888 OPEN
+{
+/*if(!GetCvar("123Death_WeaponTime")){
+ConsoleCommand("set 123Death_WeaponTime 12");
+ConsoleCommand("archivecvar 123death_weapontime");
+}*/
+
+if(ACS_ExecuteWithResult(975,0) != 2){
+Print(s:"This is not LMS!");
+terminate;
+}
+While(PlayerCount()<2){Delay(35);}
+SetPlayerProperty(1,1,4);
+Delay(35 * GetCVar("sv_lmscountdowntime") + 1);
+SetFont("BIGFONT");
+HudMessage(s:"123 DEATH!"; HUDMSG_TYPEON, 0, CR_RED, 1.5, 0.35, 5.0, 0.05, 0.5);
+SetFont("SMALLFONT");
+HudMessage(s:"You will get a random weapon after a certain amount of time. You only get to use this for a bit. Get more frags to get better rewards!"; HUDMSG_PLAIN, 0, CR_White, 0.1, 0.9, 10.0);
+ACS_ExecuteAlways(886,0);
+SetPlayerProperty(1,0,4);
+}
+
+Script 887 ENTER
+{
+Delay(35 * GetCVar("sv_lmscountdowntime") + 1);
+ClearInventory();
+Until (roundspassed == 3)Delay(1);
+if(CheckInventory("KilledMeStock") >=2){GiveInventory("SMSpeed",1);}
+SetFont("BIGFONT");
+HudMessage(s:"You have sped up! (If you're not lame!)"; HUDMSG_TYPEON, 0, CR_RED, 1.5, 0.35, 5.0, 0.05, 0.5);
+if(CheckInventory("KilledMeStock") ==0){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 5)Delay(1);
+if(CheckInventory("KilledMeStock") >=3){GiveInventory("RageRune",1);}
+SetFont("BIGFONT");
+HudMessage(s:"You have faster firing speed! (If you're not lame!)"; HUDMSG_TYPEON, 0, CR_RED, 1.5, 0.35, 5.0, 0.05, 0.5);
+if(CheckInventory("KilledMeStock") <=1){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 8)Delay(1);
+if(CheckInventory("KilledMeStock") >=4){GiveInventory("FastSpeed",1);}
+SetFont("BIGFONT");
+HudMessage(s:"You are even faster! (If you're not lame!)"; HUDMSG_TYPEON, 0, CR_RED, 1.5, 0.35, 5.0, 0.05, 0.5);
+if(CheckInventory("KilledMeStock") <=2){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 10)Delay(1);
+if(CheckInventory("KilledMeStock") >=5){GiveInventory("SpreadRune",1);}
+SetFont("BIGFONT");
+HudMessage(s:"You have spread! (If you're not lame!)"; HUDMSG_TYPEON, 0, CR_RED, 1.5, 0.35, 5.0, 0.05, 0.5);
+if(CheckInventory("KilledMeStock") <=3){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 13)Delay(1);
+if(CheckInventory("KilledMeStock") <=3){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 15)Delay(1);
+if(CheckInventory("KilledMeStock") <=3){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 18)Delay(1);
+if(CheckInventory("KilledMeStock") <=4){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 20)Delay(1);
+if(CheckInventory("KilledMeStock") <=4){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 21)Delay(1);
+if(CheckInventory("KilledMeStock") <=4){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 22)Delay(1);
+if(CheckInventory("KilledMeStock") <=5){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 23)Delay(1);
+if(CheckInventory("KilledMeStock") <=5){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 24)Delay(1);
+if(CheckInventory("KilledMeStock") <=5){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 25)Delay(1);
+if(CheckInventory("KilledMeStock") <=6){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 26)Delay(1);
+if(CheckInventory("KilledMeStock") <=6){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 27)Delay(1);
+if(CheckInventory("KilledMeStock") <=6){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 28)Delay(1);
+if(CheckInventory("KilledMeStock") <=6){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 29)Delay(1);
+if(CheckInventory("KilledMeStock") <=6){GiveInventory("IMightSplode",1);}
+Until (roundspassed == 30)Delay(1);
+if(CheckInventory("KilledMeStock") <=6){GiveInventory("IMightSplode",1);}
+}
+
+Script 885 (void)
+{
+GiveInventory("FastSpeedX",1);
+GiveInventory("HighJumpRune",1);
+SetFont("BIGFONT");
+HudMessageBold(n:0,s:" is going to explode in 5 seconds!"; HUDMSG_PLAIN, 0, CR_RED, 1.5, 0.0, 0.95);
+AmbientSound("misc/gravitywarn",127);
+Delay(35);
+SetFont("BIGFONT");
+HudMessageBold(n:0,s:" is going to explode in 4 seconds!"; HUDMSG_PLAIN, 0, CR_RED, 1.5, 0.0, 0.95);
+AmbientSound("misc/gravitywarn",127);
+Delay(35);
+SetFont("BIGFONT");
+HudMessageBold(n:0,s:" is going to explode in 3 seconds!"; HUDMSG_PLAIN, 0, CR_RED, 1.5, 0.0, 0.95);
+AmbientSound("misc/gravitywarn",127);
+Delay(35);
+SetFont("BIGFONT");
+HudMessageBold(n:0,s:" is going to explode in 2 seconds!"; HUDMSG_PLAIN, 0, CR_RED, 1.5, 0.0, 0.95);
+AmbientSound("misc/gravitywarn",127);
+Delay(35);
+SetFont("BIGFONT");
+HudMessageBold(n:0,s:" is going to explode in 1 second!"; HUDMSG_PLAIN, 0, CR_RED, 1.5, 0.0, 0.95);
+AmbientSound("misc/gravitywarn",127);
+Delay(35);
+GiveInventory("ISplode",1);
+}
+
+Script 886 (void)
+{
+Delay (random(10 * 35,25 * 15));
+helprandom = random(0,63);
+SetMusic("");
+for (int a=1000; a<1033; a++)
+{
+GiveActorInventory(a,help[helprandom],1);
+}
+SetWeapon(help[helprandom]);
+int weptime = GetCvar("123Death_weapontime");
+Delay(weptime * 35);
+for (a=1000; a<1033; a++)
+{
+TakeActorInventory(a,help[helprandom],1);
+}
+roundspassed++;
+SetMusic("*");
+//tengu man work around
+if(GetLevelInfo(LEVELINFO_LEVELNUM) == 68){
+SetMusic("TENMUS");
+}
+Delay(1);
+Restart;
+}
+
+script 540 (void) //anticamp
+{
+int i = 0;
+for (i = 0; 0 <= 999; i++)
+{
+delay(1);
+Sector_SetDamage(i,10,MOD_EXIT);
+ChangeFloor(i, "FIRELAV");
+}
+}
+
+script 621 DEATH
+{
+setactivator(-1);
+if(playercount()==3)
+{
+SetFont("BigFont");
+HudMessageBold(s:"Two players are left standing! "; HUDMSG_TYPEON | HUDMSG_LOG, 0, CR_RED, 1.5, 0.35, 3.5, 0.08, 0.5);
+}
+}

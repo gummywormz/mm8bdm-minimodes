@@ -1,0 +1,139 @@
+actor AAASpeed : Powerspeed
+{
++INVENTORY.ALWAYSPICKUP
++INVENTORY.AUTOACTIVATE
+powerup.duration 0x7FFFFFFF
+Speed 3.0
+}
+
+actor AAAExplode
+{
+PROJECTILE
+Speed 0
+Damage (1)
+Radius 1
+Height 1
++RIPPER
+Damagetype "AAA"
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 1 A_Explode(30,128,0)
+stop
+}
+}
+
+actor AAAAAAWep : MegaBuster
+{
+Weapon.AmmoUse 0
+Weapon.AmmoGive 1
+Inventory.PickupMessage "Power Up! AAAAAAAAAAAAAAAAAAAAAAAAAA!"
+inventory.pickupsound "weapon/weaponup"
+Weapon.SlotNumber 1
+Obituary "%o was AAAAAAAAAAA'd by %k."
+weapon.ammotype "BusterAmmo"
+inventory.pickupsound "weapon/weaponup"
++WEAPON.AMMO_OPTIONAL
+Scale 2.0
+States
+{
+Spawn:
+TNT1 A 1
+stop
+Ready:
+TNT1 A 1
+TNT1 A 1 A_PlaySound("AAAAAA",7,128,1)
+TNT1 A 1 A_GiveInventory("AAASpeed",1)
+Explode:
+TNT1 A 1 A_Recoil(-1)
+TNT1 A 1 A_SpawnItemEx("AAAExplode")
+goto Explode
+}
+}
+
+
+actor AAAFlagOn : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0
+TNT1 A 0 A_ChangeFlag("ACTIVATEMCROSS", 0)
+TNT1 A 0 A_ChangeFlag("NOBLOCKMONST", 1)
+stop
+}
+}
+
+actor AAAFlagOff : CustomInventory
+{
+states
+{
+Pickup:
+TNT1 A 0
+TNT1 A 0 A_ChangeFlag("ACTIVATEMCROSS", 1)
+TNT1 A 0 A_ChangeFlag("NOBLOCKMONST", 0)
+stop
+}
+}
+
+Actor MegaManAAA : MegaMan Replaces MegaMan
+{
++ACTIVATEMCROSS
+-NOBLOCKMONST
+States
+{
+Pain.AAA:
+PLAY H 0 ThrustThing(random(0,255),random(30,255),1,0)
+PLAY H 0 ThrustThingZ(0,random(20,255),random(0,1),1)
+Goto pain+1
+Death.AAA:
+PLAY H 0 A_StopSound(7)
+goto Death
+Death.Beam:
+//Death.GravityHold:
+Death.instagib:
+Death.Telefrag:
+PLAY H 0 A_StopSound(7)
+PLAY Z 1 SetPlayerProperty(0, 0, 4)
+PLAY H 0 A_GiveToTarget("KilledMe",1)
+PLAY H 0 A_GiveToTarget("KilledMeStock",1)
+PLAY H 0 A_GiveInventory("CutterFlag",999)
+PLAY H 0 A_TakeInventory("WeaponCharge",999)
+PLAY H 0 A_GiveInventory("IsDead",1)
+PLAY Z 0 A_PlayerScream
+PLAY H 0 A_SpawnItemEx("FakeDeathFX", 0, 0, 32)
+PLAY Z 1 A_CheckPlayerDone
+wait
+Death:
+PLAY H 0 A_StopSound(7)
+PLAY H 0 SetPlayerProperty(0, 0, 4)
+PLAY H 0 A_TakeInventory("WeaponCharge",999)
+PLAY H 0 A_NoBlocking
+PLAY H 0 A_GiveInventory("CutterFlag",999)
+PLAY H 0 A_GiveInventory("IsDead",1)
+PLAY H 0 A_Stop
+PLAY H 0 A_GiveToTarget("KilledMeStock",1)
+PLAY H 1 A_GiveToTarget("KilledMe",1)
+PLAY H 19 ACS_ExecuteAlways(999,0,0)
+PLAY H 0 SetPlayerProperty(0, 0, 4)
+PLAY H 0 A_PlayerScream
+PLAY H 0 A_SpawnItemEx("FakeDeathFX", 0, 0, 32)
+PLAY Z 1 A_CheckPlayerDone
+wait
+Death.Falling:
+PLAY H 0 A_StopSound(7)
+PLAY H 0 SetPlayerProperty(0, 0, 4)
+PLAY H 0 A_TakeInventory("WeaponCharge",999)
+PLAY H 0 A_NoBlocking
+PLAY H 0 A_GiveInventory("CutterFlag",999)
+PLAY H 0 A_GiveInventory("IsDead",1)
+PLAY Z 1 A_PlayerScream
+PLAY Z 1 A_Stop
+PLAY Z 0 A_GiveToTarget("KilledMeStock",1)
+PLAY Z 0 A_GiveToTarget("KilledMe",1)
+PLAY Z 1 ACS_ExecuteAlways(999,0,0)
+PLAY Z 1 A_CheckPlayerDone
+wait
+}
+}

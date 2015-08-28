@@ -1,0 +1,32 @@
+#INCLUDE "ZCOMMON.ACS"
+#LIBRARY "GLOBAL"
+#LIBRARY "AAAAMODE"
+
+str weapon_name = "AAAAAAWep";
+str mode_name = "buckshot";
+
+Script 888 ENTER
+{
+if(GetCVar(mode_name) == 1){
+ClearInventory();
+Delay(2);
+GiveInventory(weapon_name,1);
+SetWeapon(weapon_name);
+
+if(GetCvar("aaaaaa_nolineblock"))
+{
+	GiveInventory("AAAFlagOn",1);
+}
+else
+{
+	GiveInventory("AAAFlagOff",1);
+}
+
+}
+else{PrintBold(s:"Buckshot is not enabled!");}
+}
+
+Script 889 RESPAWN
+{
+ACS_ExecuteAlways(888,0);
+}

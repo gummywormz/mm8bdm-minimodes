@@ -1,0 +1,91 @@
+actor FastSpeedX : Powerspeed
+{
++INVENTORY.ALWAYSPICKUP
++INVENTORY.AUTOACTIVATE
+powerup.duration -20
+Speed 1.5
+}
+
+actor IMightSplode : CustomInventory
+{
+Inventory.amount 1
+inventory.maxamount 1
+States
+{
+Pickup:
+TNT1 A 1 A_Jump(100,"Welp")
+stop
+Welp:
+TNT1 A 1 ACS_Execute(885,0,0)
+stop
+}
+}
+
+actor FastSpeed : Powerspeed
+{
++INVENTORY.ALWAYSPICKUP
++INVENTORY.AUTOACTIVATE
+powerup.duration 0x7FFFFFFF
+Speed 1.5
+}
+
+actor ISplode : CustomInventory
+{
+Inventory.amount 1
+inventory.maxamount 1
+States
+{
+Pickup:
+TNT1 A 1 A_SpawnItemEx("OblivionExplode")
+stop
+}
+}
+
+actor OblivionExplode
+{
+PROJECTILE
++DONTBLAST
+Obituary "%o was caught in %k's Explosion."
++PIERCEARMOR 
++FORCERADIUSDMG
++FORCEXYBILLBOARD
+Radius 8
+Height 8
+//scale 20.0
+speed 0
+damage (1)
++FOILINVUL
+damagetype "Nope"
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 1 A_Explode(999, 500, 1)
+TNT1 A 1 A_SpawnItemEx("OblivionEffect",0,0,0,0,0,0,0)
+stop
+}
+}
+
+actor OblivionEffect
+{
++NOINTERACTION
++CLIENTSIDEONLY
++FORCEXYBILLBOARD
+Radius 8
+Height 8
+scale 15.0
+States
+{
+Spawn:
+BOMB BCDEFGHIJKLMNOPQR 5
+stop
+}
+}
+
+actor SMSpeed : Powerspeed
+{
++INVENTORY.ALWAYSPICKUP
++INVENTORY.AUTOACTIVATE
+powerup.duration 0x7FFFFFFF
+Speed 1.333
+}

@@ -1,0 +1,4 @@
+texture VARAMBD, 56, 8
+{
+patch BARAMBD, 0, 0 {rotate 90}
+}

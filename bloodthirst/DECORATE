@@ -1,0 +1,382 @@
+Actor BloodMeter : Inventory
+{
+Inventory.Amount 1
+Inventory.MaxAmount 100
+}
+
+actor DeathReward : CustomInventory //lazy >_>
+{
+Inventory.Amount 1
+Inventory.MaxAmount 1
++INVENTORY.AUTOACTIVATE
+States
+{
+Spawn:
+TNT1 A 1
+stop
+Use:
+TNT1 A 1 A_Jump(256,"Magnet1",
+"Magnet3",
+"Snake1",
+"Snake3",
+"ETank3",
+"ETank1",
+"GoldTank",
+"StarMan",
+"Magnet1",
+"Magnet3",
+"Snake1",
+"Snake3",
+"Magnet1",
+"Magnet3",
+"Snake1",
+"Snake3",
+"Magnet1",
+"Magnet3",
+"Snake1",
+"Snake3",
+"ETank3",
+"ETank1")
+stop
+Magnet1:
+TNT1 A 1 A_GiveInventory("RageRune",1)
+TNT1 A 1 A_TakeInventory("DeathReward",1)
+stop
+Magnet3:
+TNT1 A 1 A_GiveInventory("SpreadRune",1)
+TNT1 A 1 A_TakeInventory("DeathReward",1)
+stop
+Snake1:
+TNT1 A 1 A_GiveInventory("StrengthRune",1)
+TNT1 A 1 A_TakeInventory("DeathReward",1)
+stop
+Snake3:
+TNT1 A 1 A_GiveInventory("HasteRune",1)
+TNT1 A 1 A_TakeInventory("DeathReward",1)
+stop
+ETank3:
+TNT1 A 1 A_GiveInventory("ETank",1)
+TNT1 A 1 A_TakeInventory("DeathReward",1)
+stop
+ETank1:
+TNT1 A 1 A_GiveInventory("WTank",1)
+TNT1 A 1 A_TakeInventory("DeathReward",1)
+stop
+GoldTank:
+TNT1 A 1 A_GiveInventory("BloodMeter",30)
+TNT1 A 1 A_TakeInventory("DeathReward",1)
+stop
+StarMan:
+TNT1 A 1 A_GiveInventory("DoomSphereX",1)
+TNT1 A 1 A_TakeInventory("DeathReward",1)
+stop
+}
+}
+
+//odd note about this: the SpawnItemEx workaround only seems to work in the first
+//frame of damagetyped pain states. As a result, this is messy, but better than nothing.
+
+Actor MegaManB : MegaMan
+{
+player.startitem "MegaBuster"
+player.startitem "BusterAmmo", 3
+Player.StartItem "BloodMeter" , 5
+States
+{
+Pain.FireSpin:
+Pain.QuickBoomerang:
+Pain.Buster:
+Pain.BassBuster:
+Pain.WildCoil:
+Pain.ChargeKick:
+Pain.YamatoSpear:
+Pain.DiveMissile:
+Pain.StarCrash:
+Pain.CentaurFlash:
+Pain.FreezeCracker:
+Pain.ScrewCrusher:
+Pain.PharaohHold:
+Pain.TornadoHold:
+Pain.TrebleSentry:
+Pain.ScorchWheel:
+Pain.MagnetMissile:
+Pain.JunkShield:
+Pain.OilSlider:
+Pain.WaveBurner:
+Pain.WaveBurnerUW:
+Pain.Misc:
+Pain.Treble:
+Pain.FlameSwordSpark:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+Goto pain+1
+
+Pain.WaterBalloon:
+Pain.FlashBomb:
+Pain.RemoteMine:
+Pain.IceWall:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_ScaleVelocity(0.9)
+Goto Pain+1
+Pain.SpreadDrill:
+Pain.SpreadDrill2:
+Pain.SpreadDrill3:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_JumpIfInventory("SpreadDrillProtect", 1 ,2)
+PLAY H 0 A_PlaySoundEx("weapon/spreaddrillhit","SoundSlot5")
+PLAY H 0 A_GiveInventory("SpreadDrillProtect", 1)
+Goto pain+1
+Pain.FlameSword:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_GiveInventory("FlameSwordProtect", 1)
+PLAY HH 0 A_SpawnItemEx("ScorchBit",0,0,0,random(-10,10),random(-10,10),random(10,15),random(0,360))
+Goto pain
+Pain.WindStorm:
+Pain.FlingDamage:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 ThrustThing(random(0,255),5,0,0)
+PLAY H 0 ThrustThingZ(0,30,0,0)
+Goto pain+1
+Pain.SlashClaw:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_PlaySoundEx("weapon/slashclawhit","SoundSlot5")
+Goto Pain
+Pain.FlashStopper:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_JumpIfInventory("BrightBlind", 1,3)
+PLAY H 0 A_GiveInventory("BrightBlind",125)
+PLAY H 0 ACS_ExecuteAlways(249, 0)
+Goto pain+1
+PLAY H 0 A_GiveInventory("BrightBlind",55)
+Goto pain+1
+Pain.TimeSlow:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_GiveInventory("Slowed",1)
+Goto pain+1
+Pain.SparkShock:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_SpawnItemEx("ShockFX",4,0,32)
+PLAY H 0 A_GiveInventory("Shocked",1)
+Goto Pain+1
+Pain.CrashBomb:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_Stop
+Goto Pain+1
+Pain.GravityHold:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 A_ChangeVelocity(momx, momy, 0, CVF_REPLACE)
+PLAY H 0 A_JumpIf(z-floorz>180,"GravityForce4")
+PLAY H 0 A_JumpIf(z-floorz>128,"GravityForce3")
+PLAY H 0 A_JumpIf(z-floorz>32,"GravityForce2")
+PLAY H 0 A_JumpIf(z-floorz>8,"GravityForce1")
+Goto GravityForceFinish
+GravityForce4:
+PLAY H 2 A_GiveInventory("GravityForce4",1)
+Goto GravityForceFinish
+GravityForce3:
+PLAY H 2 A_GiveInventory("GravityForce3",1)
+Goto GravityForceFinish
+GravityForce2:
+PLAY H 2 A_GiveInventory("GravityForce2",1)
+Goto GravityForceFinish
+GravityForce1:
+PLAY H 2 A_GiveInventory("GravityForce1",1)
+Goto GravityForceFinish
+GravityForceFinish:
+PLAY H 0 A_CheckFloor(2)
+PLAY H 0 ThrustThingZ(0,150,1,0)
+PLAY H 0
+Goto Pain+1
+
+Pain.Tango:
+Pain.Beat:
+Pain.ProtoBuster:
+Pain.SuperAdaptor:
+Pain.LaserBuster:
+Pain.ArrowBuster:
+Pain.DuoFist1:
+Pain.DuoFist2:
+Pain.DuoFist3:
+Pain.TrebleBoost:
+Pain.FireStorm:
+Pain.IceSlasher:
+Pain.ThunderBeam:
+Pain.SuperArm:
+Pain.HyperBomb:
+Pain.RollingCutter:
+Pain.AirShooter:
+Pain.AtomicFire1:
+Pain.AtomicFire2:
+Pain.AtomicFire3:
+Pain.BubbleLead:
+Pain.LeafShield:
+Pain.MetalBlade:
+Pain.GeminiLaser:
+Pain.HardKnuckle:
+Pain.SearchSnake:
+Pain.NeedleCannon:
+Pain.ShadowBlade:
+Pain.TopSpin:
+Pain.PharaohShot3:
+Pain.PharaohShot2:
+Pain.PharaohShot1:
+Pain.DrillBomb:
+Pain.DustCrusher:
+Pain.DustCrusherBit:
+Pain.CrystalEyeBit:
+Pain.CrystalEye:
+Pain.RainFlush:
+Pain.RingBoomerang:
+Pain.PowerStone:
+Pain.NapalmBomb:
+Pain.GyroAttack:
+Pain.WaterWave:
+Pain.BlizzardAttack:
+Pain.OilFlame:
+Pain.KnightCrush:
+Pain.FlameBlast:
+Pain.PlantBarrier:
+Pain.SilverTomahawk:
+Pain.DangerWrap:
+Pain.NoiseCrush1:
+Pain.NoiseCrush2:
+Pain.WildCoil2:
+Pain.ThunderBolt:
+Pain.AstroCrush:
+Pain.MegaBall:
+Pain.HomingSniper:
+Pain.IceWave:
+Pain.ThunderClaw:
+Pain.TenguBlade:
+Pain.ThunderClaw:
+Pain.CopyVision:
+Pain.MagicCard:
+Pain.LightningBolt:
+Pain.BalladeCracker:
+Pain.Sakugarne:
+Pain.MirrorBuster:
+Pain.MirrorBuster2:
+Pain.MirrorBuster1:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+goto Pain
+//because why not
+Pain.AAA:
+PLAY H 0 A_SpawnItemEx("BloodHit")
+PLAY H 0 ThrustThing(random(0,255),random(30,255),1,0)
+PLAY H 0 ThrustThingZ(0,random(20,255),random(0,1),1)
+Goto pain+1
+
+Pain:
+PLAY H 0 A_ScaleVelocity(0.75)
+PLAY H 0 A_JumpIfInventory("EnkerMirrorCount",1,"EnkerAbsorb")
+PLAY H 0 A_Pain
+PLAY H 1 A_SpawnItem("PainFX",0,3)
+PLAY H 1 A_Recoil(1)
+PLAY HHHHHHHHH 2 A_SpawnItem("PainFX",0,3)
+PLAY H 1
+Goto Spawn
+Death.WindStorm:
+Death.GravityHold:
+PLAY H 0 A_StopSound(7)
+PLAY H 0 SetPlayerProperty(0, 0, 4)
+PLAY H 0 A_ChangeFlag("NOINTERACTION", 1)
+PLAY H 0 A_TakeInventory("WeaponCharge",999)
+PLAY H 0 A_NoBlocking
+PLAY H 0 A_TakeInventory("CutterFlag",999)
+PLAY H 0 A_GiveInventory("IsDead",1)
+PLAY H 0 A_Stop
+PLAY H 0 A_GiveToTarget("KilledMeStock",1)
+PLAY H 1 A_GiveToTarget("KilledMe",1)
+PLAY H 0 A_GiveToTarget("BloodMeter",ACS_ExecuteWithResult(884))
+PLAY H 1 A_GiveToTarget("DeathReward",1)
+PLAY H 0 ACS_ExecuteAlways(999,0,0)
+PLAY H 0 SetPlayerProperty(0, 0, 4)
+RiseMyMegaman:
+PLAY H 1 ThrustThingZ(0,10,0,1)
+PLAY H 0 A_JumpIf(ceilingz-z<64, "ExplodeNow")
+PLAY H 0 A_GiveInventory("Cutterflag", 1)
+PLAY H 0 A_JumpIfInventory("CutterFlag", 35, "ExplodeNow")
+Goto RiseMyMegaman
+ExplodeNow:
+PLAY H 0 A_Stop
+PLAY H 0 A_PlayerScream
+PLAY H 0 A_GiveInventory("CutterFlag",999)
+PLAY H 0 A_SpawnItemEx("FakeDeathFX", 0, 0, 0)
+PLAY Z 1 A_CheckPlayerDone
+wait
+Death.Beam:
+//Death.GravityHold:
+Death.instagib:
+Death.Telefrag:
+PLAY H 0 A_StopSound(7)
+PLAY Z 1 SetPlayerProperty(0, 0, 4)
+PLAY H 0 A_GiveToTarget("KilledMe",1)
+PLAY H 0 A_GiveToTarget("KilledMeStock",1)
+PLAY H 0 A_GiveToTarget("DeathReward",1)
+PLAY H 0 A_GiveToTarget("BloodMeter",ACS_ExecuteWithResult(884))
+PLAY H 0 A_GiveInventory("CutterFlag",999)
+PLAY H 0 A_TakeInventory("WeaponCharge",999)
+PLAY H 0 A_GiveInventory("IsDead",1)
+PLAY Z 0 A_PlayerScream
+PLAY H 0 A_SpawnItemEx("FakeDeathFX", 0, 0, 32)
+PLAY Z 1 A_CheckPlayerDone
+wait
+Death:
+PLAY H 0 A_StopSound(7)
+PLAY H 0 SetPlayerProperty(0, 0, 4)
+PLAY H 0 A_TakeInventory("WeaponCharge",999)
+PLAY H 0 A_NoBlocking
+PLAY H 0 A_GiveInventory("CutterFlag",999)
+PLAY H 0 A_GiveInventory("IsDead",1)
+PLAY H 0 A_Stop
+PLAY H 0 A_GiveToTarget("KilledMeStock",1)
+PLAY H 0 A_GiveToTarget("DeathReward",1)
+PLAY H 0 A_GiveToTarget("BloodMeter",ACS_ExecuteWithResult(884))
+PLAY H 1 A_GiveToTarget("KilledMe",1)
+PLAY H 19 ACS_ExecuteAlways(999,0,0)
+PLAY H 0 SetPlayerProperty(0, 0, 4)
+PLAY H 0 A_PlayerScream
+PLAY H 0 A_SpawnItemEx("FakeDeathFX", 0, 0, 32)
+PLAY Z 1 A_CheckPlayerDone
+wait
+}
+}
+
+
+//silly workarounds thanks to jax
+actor BloodHit
+{
+Height 0
+Radius 0
++NOINTERACTION
+-SOLID
++NOGRAVITY
++MISSILE
+States
+{
+Spawn:
+TNT1 A 0
+TNT1 A 1 A_GiveToTarget("BloodHitPickup",1)
+stop
+}
+}
+
+actor BloodHitPickup : CustomInventory
+{
+inventory.amount 1
+inventory.maxamount 1
+States
+{
+Spawn:
+TNT1 A 0
+stop
+Pickup:
+TNT1 A 0
+TNT1 A 1 A_GiveToTarget("BloodMeter",ACS_ExecuteWithResult(884))
+stop
+}
+}
+
+actor DoomSphereX : DoomSphere
+{
+Powerup.Duration -10
+}
