@@ -4,7 +4,7 @@
 int helprandom = 0;
 int roundspassed = 0;
 
-str help[72]={
+str help[71]={
 "TopSpinWep",
 "FlameSwordWep",
 "FlameBlastWep",
@@ -23,7 +23,6 @@ str help[72]={
 "CrashBombWep",
 "StarCrashWep",
 "IceSlasherWep",
-"CentaurFlashWep",
 "RainFlushWep",
 "ThunderBoltWep",
 "ThunderClawWep",
