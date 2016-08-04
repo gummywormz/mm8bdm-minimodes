@@ -186,7 +186,7 @@ Script 886 (void)
 {
 Delay (random(10 * 35,25 * 15));
 helprandom = random(0,63);
-SetMusic("");
+//SetMusic("");
 for (int a=1000; a<1033; a++)
 {
 GiveActorInventory(a,help[helprandom],1);
@@ -199,10 +199,10 @@ for (a=1000; a<1033; a++)
 TakeActorInventory(a,help[helprandom],1);
 }
 roundspassed++;
-SetMusic("*");
+//SetMusic("*");
 //tengu man work around
 if(GetLevelInfo(LEVELINFO_LEVELNUM) == 68){
-SetMusic("TENMUS");
+//SetMusic("TENMUS");
 }
 Delay(1);
 Restart;
