@@ -1,0 +1,49 @@
+#include "zcommon.acs"
+#library "MEGAHOT"
+int px = 0;
+int py = 0;
+int pz = 0;
+
+Script 600 ENTER
+{
+//You'd think you'd be able to actually use button inputs
+//but it's a pain. Basically, using BUTTONS breaks due to player freeze
+//and OLDBUTTONS tends to break the script more for some reason
+//go yell at jaxof7 to create a better version of this or something
+//its single player only anyway...
+if(playerisbot(ActivatorTID()-1000))
+{
+//print(s:"Terminated");
+terminate;
+}
+
+//int buttons = GetPlayerInput(-1,MODINPUT_OLDBUTTONS);
+
+int x = GetActorX(ActivatorTID());
+int y = GetActorY(ActivatorTID());
+int z = GetActorZ(ActivatorTID());
+//print(i:x, s:",", i:y, s:",",i:z);
+int range = 90000;
+if( (x <= px+range && x >= px-range)  && (y <= py+range && y >= py - range) && (z == pz) )
+//if(! (buttons & (BT_FORWARD | BT_BACK | BT_LEFT | BT_RIGHT | BT_MOVERIGHT | BT_MOVELEFT | BT_JUMP)))
+{
+//print(s:"given");
+GiveInventory("MegaHot",1);
+SetPlayerProperty(1,1,4);
+}
+else
+{
+//print(s:"taken");
+TakeInventory("PowerTimeFreezer",1);
+TakeInventory("MegaHot",1);
+SetPlayerProperty(1,0,4);
+}
+SetPlayerProperty(0,0,4);
+//print(i:px, s:",", i:py, s:",",i:pz);
+px = x;
+py = y;
+pz = z;
+Delay(1);
+restart;
+
+}

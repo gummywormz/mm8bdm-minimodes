@@ -1,0 +1,17 @@
+actor MegaHot : PowerupGiver
+{
+ powerup.type "TimeFreezer"
+ powerup.duration -30
+ +AUTOACTIVATE
+ -INVENTORY.INVBAR
+ States
+ {
+ Pickup:
+ Use:
+ TNT1 A 1 A_Print("used",8)
+ stop
+ Spawn:
+ TNT1 A 1
+ stop
+ }
+}
