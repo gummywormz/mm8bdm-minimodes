@@ -1,0 +1,157 @@
+#INCLUDE "zcommon.acs"
+#library "GAME"
+
+bool phase2 = false;
+int count = -1;
+int sconetime = -1;
+int pickups = 0;
+int sconemaster = -1;
+int actualplayer = -1;
+bool actuallystartcheckingnow = false;
+Script 600 (void)
+{
+if(phase2){SetResultValue(1);}
+else{SetResultValue(0);}
+}
+
+Script 602 (void)
+{
+pickups++;
+}
+
+Script 601 OPEN
+{
+Delay(5);
+count = thingcountname("Scone",0);
+sconetime = (count * 5) - (PlayerCount() * 30);
+if(sconetime <= 30){sconetime = 90;}
+if(sconetime >= 300){sconetime = 300;}
+if(sconetime >= 180 && PlayerCount() <= 9){sconetime = 200;}
+//rest of the morph script goes here
+}
+
+Script 603 OPEN
+{
+if(phase2){terminate;}
+SetFont("SMALLFONT");
+HudMessage( i:pickups, s:" out of " , i:count, s:" scones have been found.\n", i:sconetime, s:" seconds are left"; HUDMSG_PLAIN, 0, CR_LIGHTBLUE, 0.5, 0.9, 2.5);
+Delay(18);
+restart;
+}
+
+
+Script 700 ENTER
+{
+if(GetCvar("lastmanstanding")==0){
+PrintBold(s:"Game type needs to be last man standing to play sconequest!");
+terminate;
+}
+if(Timer()<35)
+	{
+	SetFont("BIGFONT");
+	HudMessage(s:"The Scone Master is Coming..."; HUDMSG_FADEOUT, 205, CR_YELLOW,0.5, 0.10, 3.0,2.0);
+	}
+
+Delay(5);
+SetPlayerProperty(1,1,4);
+GiveInventory("PowerSuperProtection",1);
+TakeInventory("SparkShockWep",1);
+TakeInventory("ConcreteShotWep",1);
+//SetPlayerProperty(1,2,5);
+If(PlayerCount()<=1){SetPlayerProperty(1,0,4);terminate;}
+Delay(35*5);
+
+ACS_Execute(701,0);
+
+}
+
+Script 701 (void) // Start choosing a player
+{
+If(PlayerCount()<=1){terminate;}
+if(ThingCountName("SconeMaster",0)>0){terminate;}
+SconeMaster = random(0,31);
+If(PlayerInGame(SconeMaster))
+	{
+	//printbold(s:"Last: ", i:SelectedAlpha);
+	//printbold(s:"Current: ", i:InfectPicker+1000);
+	MorphActor(SconeMaster+1000, "SconeMaster", "", 999999999999, 770, "", "");
+	ActualPlayer = SconeMaster+1000;
+	}
+	
+
+//GiveActorInventory(InfectPicker, "InfectMorph", 1);
+Delay(2);
+if(ThingCountName("SconeMaster",0)==0){restart;}
+SetPlayerProperty(1,0,4);
+GiveInventory("PowerSuperProtection",1);
+TakeInventory("SparkShockWep",1);
+TakeInventory("ConcreteShotWep",1);
+GiveActorInventory(ActualPlayer,"IAmAScone",1);
+ACS_ExecuteAlways(604,0);
+AmbientSound("misc/sconeintro",128);
+if(GetGameModeState() == GAMESTATE_INPROGRESS )actuallystartcheckingnow = true;
+HudMessageBold(n:SconeMaster, s:" Is the scone master!"; HUDMSG_FADEOUT, 206, CR_YELLOW,0.5, 0.90, 1.8,0.2);
+}
+
+Script 604 (void)
+{
+sconetime--;
+if(ThingCountName("SconeMaster",0)==0)
+{
+SetFont("BIGFONT");
+HudMessageBold(s:"The Scone Master is dead! Press f to pay respect."; HUDMSG_FADEOUT, 201, CR_YELLOW,0.5, 0.10, 3.0,2.0);
+Delay(35 * 5);
+ConsoleCommand("Nextmap");}
+if(pickups >= count && !phase2)
+{
+phase2 = true;
+GiveActorInventory(ActualPlayer,"Phase2",1);
+TakeActorInventory(ActualPlayer,"PowerSuperProtection",1);
+GiveActorInventory(ActualPlayer,"NoInvulnPlz",1);
+GiveActorInventory(ActualPlayer,"SpreadRune",1);
+SetActorProperty(ActualPlayer,APROP_HEALTH, 50 * PlayerCount());
+SetMusic("SCONEBOS");
+SetFont("BIGFONT");
+HudMessageBold(s:"The Scone Master is understandably upset!\nPut him out of his misery!"; HUDMSG_FADEOUT, 200, CR_YELLOW,0.5, 0.10, 3.0,2.0);
+}
+
+if(sconetime <= 0 && !phase2)
+{
+SetFont("BIGFONT");
+HudMessageBold(s:"The Scone Master has succeeded!"; HUDMSG_FADEOUT, 209, CR_YELLOW,0.5, 0.10, 3.0,2.0);
+Delay(35 * 3);
+ConsoleCommand ("NextMap");
+}
+Delay(35);
+restart;
+}
+
+Script 605 DEATH
+{
+if(ActivatorTID() == ActualPlayer)
+{
+SetFont("BIGFONT");
+HudMessageBold(s:"The Scone Master is dead! Press f to pay respect."; HUDMSG_FADEOUT, 210, CR_YELLOW,0.5, 0.10, 3.0,2.0);
+Delay(35 * 3);
+ConsoleCommand("Nextmap");
+}
+}
+
+Script 606 ENTER
+{
+if(ThingCountName("SconeMaster",0)==0 && actuallystartcheckingnow)
+{
+SetFont("BIGFONT");
+HudMessageBold(s:"The Scone Master is dead! Press f to pay respect."; HUDMSG_FADEOUT, 201, CR_YELLOW,0.5, 0.10, 3.0,2.0);
+Delay(35 * 5);
+ConsoleCommand("Nextmap");}
+
+TakeInventory("SparkShockWep",1);
+TakeInventory("ConcreteShotWep",1);
+Delay(35);
+restart;
+}
+Script 607 (void)
+{
+phase2 = true;
+}

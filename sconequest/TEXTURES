@@ -1,0 +1,6 @@
+graphic SCONEICO, 32,32
+{
+   XScale 2.0
+   YScale 2.0
+   Patch SCNEA0, 0, 0
+}

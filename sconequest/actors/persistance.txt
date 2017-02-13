@@ -1,0 +1,65 @@
+actor SmallHealthPersistant : RandomSpawner replaces SmallHealth /*22229*/ {
+Dropitem "Scone" 255
+}
+
+actor BigHealthPersistant : RandomSpawner replaces BigHealth /*22230*/ {
+Dropitem "Scone" 255
+}
+
+actor WeaponEnergyPersistant : RandomSpawner replaces WeaponEnergy /*22231*/ {
+Dropitem "Scone" 255
+}
+
+actor BigWeaponEnergyPersistant : RandomSpawner replaces BigWeaponEnergy /*22232*/ {
+Dropitem "Scone" 255
+}
+
+actor BeatPersistant : RandomSpawner 10157 {
+Dropitem "BeatCall" 255
+}
+
+actor RushJetPersistant : RandomSpawner 10152 {
+Dropitem "RushJet2" 255
+}
+
+actor RushCoilPersistant : RandomSpawner 10090 {
+Dropitem "RushCoil2" 255
+}
+
+actor Item1Persistant : RandomSpawner 10147 {
+Dropitem "Item1" 255
+}
+
+actor item2persistant : RandomSpawner 10148
+{
+dropitem "Item2" 255
+}
+
+Actor RushCoil2 : RushCoil Replaces RushCoil
+{
+Inventory.RespawnTics 105
+}
+
+Actor RushJet2 : RushJet Replaces RushJet
+{
+Inventory.RespawnTics 105
+}
+
+Actor BeatCall2 : BeatCall Replaces BeatCall
+{
+Inventory.RespawnTics 105
+}
+
+actor ThunderClawPersistant : RandomSpawner 11096 {
+Dropitem "ThunderClawWep" 255
+}
+
+actor TornadoHoldPersistant : RandomSpawner 11092
+{
+DropItem "TornadoHoldWep" 255
+}
+
+actor TornadoBlowPersistant : RandomSpawner 10023
+{
+DropItem "TornadoBlowWep" 255
+}

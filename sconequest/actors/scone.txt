@@ -1,0 +1,44 @@
+actor Scone : CustomInventory
+{
+inventory.respawntics 0x7FFFFFFF
++NEVERRESPAWN
+inventory.amount 1
+inventory.maxamount 9999999999
+inventory.icon "SCONEICO"
+inventory.pickupmessage "Tally Ho, scone collector!!"
+Inventory.PickupSound "misc/sconepickup"
+Scale 0.5
+-NOGRAVITY
++COUNTITEM
++INVBAR
+states
+{
+Spawn:
+SCNE A 1
+SCNE A 30 A_SpawnItemEx("SconeMarker")
+loop
+Pickup:
+SCNE A 1 A_JumpIfInventory("IAmAScone",1,"Nope")
+SCNE A 1 ACS_ExecuteAlways(602,0)
+SCNE A 1 HealThing(25)
+stop
+Nope:
+SCNE A 1 
+fail
+Use:
+WEAP Q 1 A_JumpIf(ACS_ExecuteWithResult(600,0) == 0,"Nope")
+WEAP B 0 A_PlaySoundEx("item/refill","Voice")
+WEAP Q 0 HealThing(25)
+stop
+}
+}
+actor SconeMarker : MapMarker
+{
+Scale 0.1
+States
+{
+Spawn:
+SCNE A 35
+stop
+}
+}
