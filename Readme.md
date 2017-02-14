@@ -1,6 +1,6 @@
-Description:
-You have entered the scone zone. A strange dimension similar to our own, but ruled by the evil scone master. You must collect all the scones then kill the scone master to win. 
-Requirements: Last Man Standing
-Recommendations: Play with MM8BDM Repainted (please go revive that mod) or copious amounts of drugs.
+# mm8bdm-minimodes
+Mini game modes for MM8BDM
+Here are some mini game modes for MM8BDM. Each mode is described in their folder.
 
-This mod is completely free to use as a basis or to improve. No permission needed.
+## LICENSE:
+Do whatever you want with these, really...

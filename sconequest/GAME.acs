@@ -6,8 +6,18 @@ int count = -1;
 int sconetime = -1;
 int pickups = 0;
 int sconemaster = -1;
-int actualplayer = -1;
+int ActualPlayer = -1;
+
+int sconemaster2 = -1;
+int ActualPlayer2 = -1;
+
+int sconemaster3 = -1;
+int actualplayer3 = -1;
+
 bool actuallystartcheckingnow = false;
+
+int howmanymasters = 1;
+
 Script 600 (void)
 {
 if(phase2){SetResultValue(1);}
@@ -21,7 +31,12 @@ pickups++;
 
 Script 601 OPEN
 {
+
 Delay(5);
+if(playercount() <= 8){howmanymasters = 1;}
+if(playercount() >=9 && playercount() < 17 ){howmanymasters = 2;}
+if(playercount() >= 18){howmanymasters = 3;}
+//log(i:howmanymasters);
 count = thingcountname("Scone",0);
 sconetime = (count * 5) - (PlayerCount() * 30);
 if(sconetime <= 30){sconetime = 90;}
@@ -32,6 +47,7 @@ if(sconetime >= 180 && PlayerCount() <= 9){sconetime = 200;}
 
 Script 603 OPEN
 {
+//log(i:ThingCountName("SconeMaster",0));
 if(phase2){terminate;}
 SetFont("SMALLFONT");
 HudMessage( i:pickups, s:" out of " , i:count, s:" scones have been found.\n", i:sconetime, s:" seconds are left"; HUDMSG_PLAIN, 0, CR_LIGHTBLUE, 0.5, 0.9, 2.5);
@@ -88,9 +104,11 @@ TakeInventory("SparkShockWep",1);
 TakeInventory("ConcreteShotWep",1);
 GiveActorInventory(ActualPlayer,"IAmAScone",1);
 ACS_ExecuteAlways(604,0);
+//Log(s:"There is a first player named", n:ActualPlayer);
 AmbientSound("misc/sconeintro",128);
 if(GetGameModeState() == GAMESTATE_INPROGRESS )actuallystartcheckingnow = true;
-HudMessageBold(n:SconeMaster, s:" Is the scone master!"; HUDMSG_FADEOUT, 206, CR_YELLOW,0.5, 0.90, 1.8,0.2);
+if(howmanymasters >= 2){ACS_ExecuteAlways(703,0);}
+//HudMessageBold(n:SconeMaster, s:" Is the scone master!"; HUDMSG_FADEOUT, 206, CR_YELLOW,0.5, 0.90, 1.8,0.2);
 }
 
 Script 604 (void)
@@ -104,12 +122,32 @@ Delay(35 * 5);
 ConsoleCommand("Nextmap");}
 if(pickups >= count && !phase2)
 {
+int healthtogive = 50;
+if(howmanymasters == 2){healthtogive = 25;}
+if(howmanymasters == 3){healthtogive = 10;}
 phase2 = true;
 GiveActorInventory(ActualPlayer,"Phase2",1);
 TakeActorInventory(ActualPlayer,"PowerSuperProtection",1);
 GiveActorInventory(ActualPlayer,"NoInvulnPlz",1);
 GiveActorInventory(ActualPlayer,"SpreadRune",1);
-SetActorProperty(ActualPlayer,APROP_HEALTH, 50 * PlayerCount());
+SetActorProperty(ActualPlayer,APROP_HEALTH, healthtogive * PlayerCount());
+
+if(ActualPlayer2 != -1){
+GiveActorInventory(ActualPlayer2,"Phase2",1);
+TakeActorInventory(ActualPlayer2,"PowerSuperProtection",1);
+GiveActorInventory(ActualPlayer2,"NoInvulnPlz",1);
+GiveActorInventory(ActualPlayer2,"SpreadRune",1);
+SetActorProperty(ActualPlayer2,APROP_HEALTH, healthtogive * PlayerCount());
+}
+
+if(ActualPlayer3 != -1){
+GiveActorInventory(ActualPlayer3,"Phase2",1);
+TakeActorInventory(ActualPlayer3,"PowerSuperProtection",1);
+GiveActorInventory(ActualPlayer3,"NoInvulnPlz",1);
+GiveActorInventory(ActualPlayer3,"SpreadRune",1);
+SetActorProperty(ActualPlayer3,APROP_HEALTH, healthtogive * PlayerCount());
+}
+
 SetMusic("SCONEBOS");
 SetFont("BIGFONT");
 HudMessageBold(s:"The Scone Master is understandably upset!\nPut him out of his misery!"; HUDMSG_FADEOUT, 200, CR_YELLOW,0.5, 0.10, 3.0,2.0);
@@ -126,17 +164,6 @@ Delay(35);
 restart;
 }
 
-Script 605 DEATH
-{
-if(ActivatorTID() == ActualPlayer)
-{
-SetFont("BIGFONT");
-HudMessageBold(s:"The Scone Master is dead! Press f to pay respect."; HUDMSG_FADEOUT, 210, CR_YELLOW,0.5, 0.10, 3.0,2.0);
-Delay(35 * 3);
-ConsoleCommand("Nextmap");
-}
-}
-
 Script 606 ENTER
 {
 if(ThingCountName("SconeMaster",0)==0 && actuallystartcheckingnow)
@@ -151,6 +178,67 @@ TakeInventory("ConcreteShotWep",1);
 Delay(35);
 restart;
 }
+
+
+script 703 (void)
+{
+
+SconeMaster2 = random(0,31);
+If(PlayerInGame(SconeMaster2) && SconeMaster2 != SconeMaster)
+	{
+	//printbold(s:"Last: ", i:SelectedAlpha);
+	//printbold(s:"Current: ", i:InfectPicker+1000);
+	MorphActor(SconeMaster2+1000, "SconeMaster", "", 999999999999, 770, "", "");
+	ActualPlayer2 = SconeMaster2+1000;
+	}
+	
+
+//GiveActorInventory(InfectPicker, "InfectMorph", 1);
+Delay(2);
+if(ThingCountName("SconeMaster",0)<=1){restart;}
+SetPlayerProperty(1,0,4);
+GiveActorInventory(ActualPlayer2,"PowerSuperProtection",1);
+TakeInventory("SparkShockWep",1);
+TakeInventory("ConcreteShotWep",1);
+GiveActorInventory(ActualPlayer2,"IAmAScone",1);
+//ACS_ExecuteAlways(604,0);
+//Log(s:"There is a second player named", n:ActualPlayer2);
+//AmbientSound("misc/sconeintro",128);
+if(GetGameModeState() == GAMESTATE_INPROGRESS )actuallystartcheckingnow = true;
+if(howmanymasters == 3){ACS_ExecuteAlways(704,0);}
+//HudMessageBold(n:SconeMaster, s:" Is the scone master!"; HUDMSG_FADEOUT, 206, CR_YELLOW,0.5, 0.90, 1.8,0.2);
+}
+
+script 704 (void)
+{
+
+SconeMaster3 = random(0,31);
+If(PlayerInGame(SconeMaster3) && SconeMaster3 != SconeMaster && SconeMaster3 != SconeMaster2)
+	{
+	//printbold(s:"Last: ", i:SelectedAlpha);
+	//printbold(s:"Current: ", i:InfectPicker+1000);
+	MorphActor(SconeMaster3+1000, "SconeMaster", "", 999999999999, 770, "", "");
+	ActualPlayer3 = SconeMaster3+1000;
+	}
+	
+
+//GiveActorInventory(InfectPicker, "InfectMorph", 1);
+Delay(2);
+if(ThingCountName("SconeMaster",0)!=3){restart;}
+SetPlayerProperty(1,0,4);
+GiveActorInventory(ActualPlayer3,"PowerSuperProtection",1);
+TakeInventory("SparkShockWep",1);
+TakeInventory("ConcreteShotWep",1);
+//Log(s:"There is a third player named", n:ActualPlayer3);
+GiveActorInventory(ActualPlayer3,"IAmAScone",1);
+//ACS_ExecuteAlways(604,0);
+//AmbientSound("misc/sconeintro",128);
+if(GetGameModeState() == GAMESTATE_INPROGRESS )actuallystartcheckingnow = true;
+//if(howmanymasters == 3){ACS_ExecuteAlways(704,0);}
+//HudMessageBold(n:SconeMaster, s:" Is the scone master!"; HUDMSG_FADEOUT, 206, CR_YELLOW,0.5, 0.90, 1.8,0.2);
+}
+
+
 Script 607 (void)
 {
 phase2 = true;
